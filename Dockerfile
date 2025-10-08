@@ -2,8 +2,14 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# Copy application code only (no pip install)
+# Copy requirements first for better caching
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
 COPY . .
 
-# The venv will be mounted at runtime
+# Run the bot
 CMD ["python", "bot.py"]
